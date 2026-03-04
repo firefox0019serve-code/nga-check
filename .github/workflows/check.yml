@@ -1,0 +1,23 @@
+name: NGA Monitor
+on:
+  schedule:
+    - cron: '*/20 * * * *'  # 每 20 分钟检查一次
+  workflow_dispatch:        # 支持手动运行
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check NGA
+        run: |
+          UIDS=("557398" "26529713")
+          TOKEN="${{ 7948398386:AAGxt6PGf9IrTmrNw-yKV8f-IvcGvdC2Frw }}"
+          CHAT_ID="${{ 7726903399 }}"
+          
+          for UID in "${UIDS[@]}"; do
+            # 抓取用户回帖页面
+            CONTENT=$(curl -sL "https://bbs.nga.cn/nuke.php?func=ucp&uid=${UID}" | grep -oP '(?<=<title>).*?(?=</title>)' | head -1)
+            # 这里是简化逻辑：你可以根据需求抓取更详细的内容
+            curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+                 -d "chat_id=${CHAT_ID}&text=NGA用户 ${UID} 有动态更新，快去看看吧！"
+          done
