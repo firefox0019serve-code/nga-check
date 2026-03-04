@@ -11,8 +11,8 @@ jobs:
       - name: Check NGA
         run: |
           UIDS=("557398" "26529713")
-          TOKEN="${{ 7948398386:AAGxt6PGf9IrTmrNw-yKV8f-IvcGvdC2Frw }}"
-          CHAT_ID="${{ 7726903399 }}"
+          TOKEN="${{ secrets.TG_TOKEN }}"
+          CHAT_ID="${{ secrets.TG_CHAT_ID }}"
           
           for UID in "${UIDS[@]}"; do
             # 抓取用户回帖页面
